@@ -13,7 +13,7 @@ Caller repositories keep their own event triggers, path filters, concurrency, bu
 
 ## Reusable workflows
 
-### Secret scan
+### [Secret scan](docs/workflows/secret-scan.md)
 
 Runs Gitleaks against the complete repository history.
 Comments and artifact uploads are disabled, checkout credentials are not persisted, and the token has read-only repository access.
@@ -38,7 +38,7 @@ jobs:
 
 The `gitleaks_license` mapping is optional and can be removed when the caller has no license secret.
 
-### Security scan
+### [Security scan](docs/workflows/security-scan.md)
 
 Runs Bearer twice.
 Critical and high findings fail by default, while medium, low, and warning findings are reported without failing.
@@ -80,7 +80,7 @@ jobs:
 Composite actions run inside a caller job.
 Check out the caller repository before invoking either setup action.
 
-### Setup pnpm
+### [Setup pnpm](actions/setup-pnpm/README.md)
 
 Sets up pnpm from the caller's `packageManager`, sets up Node from `.nvmrc`, restores the pnpm cache, and runs a frozen install.
 
@@ -109,7 +109,7 @@ For an npm publication job:
 | `registry-url` | empty | Optional npm registry URL |
 | `install` | `true` | Whether to install from the lockfile |
 
-### Setup Bun
+### [Setup Bun](actions/setup-bun/README.md)
 
 Sets up Node from `.nvmrc`, sets up Bun, and runs a frozen install.
 Bun defaults to `latest`, or a caller can provide a version file.
@@ -156,3 +156,8 @@ Those commands express project behavior and remain visible in each repository.
 A new shared building block belongs here only after multiple projects use the same contract, permissions, and failure policy.
 
 See [`docs/decisions/001-reuse-boundaries.md`](docs/decisions/001-reuse-boundaries.md) for the rationale.
+
+## Automation audit
+
+The [September 2026 personal-project audit](docs/audits/personal-automation-2026-09-15.md) maps duplicated automation to the current Nexo contracts and records why the remaining workflows stay local.
+Caller migrations are deferred until Nexo is public and can be referenced by an immutable commit SHA.
