@@ -9,6 +9,7 @@ Keep shared automation explicit, narrowly scoped, and safe for both public and p
 
 - `.github/workflows/`: reusable workflows invoked through `workflow_call`.
 - `actions/<name>/action.yml`: composite actions for stable, repeated step sequences.
+- `docs/workflows/`: usage guides for reusable workflows.
 - `docs/decisions/`: accepted architecture decisions and compatibility rationale.
 - `README.md`: public contracts, inputs, examples, and versioning guidance.
 - `tasks/`: local planning artifacts and completed task checklists.
