@@ -26,7 +26,7 @@ Caller repositories keep their own event triggers, path filters, concurrency, pe
 Workflow paths and action inputs are public APIs.
 Breaking changes require a new major release.
 Consumers should pin full commit SHAs and use GitHub Actions Dependabot updates to adopt releases through reviewable pull requests.
-Nexo pins established third-party revisions by SHA; `pnpm/action-setup` currently follows its v4 tag because the source projects did not contain an audited commit pin for it.
+Nexo pins established third-party revisions by SHA; `pnpm/action-setup` currently follows its v6 tag because the source projects did not contain an audited commit pin for it.
 
 ## Boundaries
 
