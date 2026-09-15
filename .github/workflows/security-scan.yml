@@ -1,0 +1,46 @@
+name: Security scan
+
+on:
+  workflow_call:
+    inputs:
+      fail_severity:
+        description: Comma-separated severities that fail the workflow
+        required: false
+        type: string
+        default: critical,high
+      report_severity:
+        description: Comma-separated severities reported without failing
+        required: false
+        type: string
+        default: medium,low,warning
+      report_findings:
+        description: Run the non-failing report pass
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  bearer:
+    name: Security scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Scan blocking severities
+        uses: bearer/bearer-action@828eeb928ce2f4a7ca5ed57fb8b59508cb8c79bc # v2
+        with:
+          severity: ${{ inputs.fail_severity }}
+
+      - name: Report remaining severities
+        if: inputs.report_findings
+        uses: bearer/bearer-action@828eeb928ce2f4a7ca5ed57fb8b59508cb8c79bc # v2
+        with:
+          severity: ${{ inputs.report_severity }}
+          exit-code: 0

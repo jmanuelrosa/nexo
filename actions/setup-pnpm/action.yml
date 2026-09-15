@@ -1,0 +1,45 @@
+name: Setup pnpm
+
+description: Set up Node and pnpm, restore the pnpm cache, and install locked dependencies
+
+inputs:
+  node-version-file:
+    description: Node version file relative to the repository root
+    required: false
+    default: .nvmrc
+  cache-dependency-path:
+    description: Dependency file used to key the pnpm cache
+    required: false
+    default: pnpm-lock.yaml
+  working-directory:
+    description: Directory in which dependencies are installed
+    required: false
+    default: .
+  registry-url:
+    description: Optional npm registry URL written to the runner npm configuration
+    required: false
+    default: ""
+  install:
+    description: Install dependencies from the lockfile
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Set up pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Set up Node
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      with:
+        node-version-file: ${{ inputs.node-version-file }}
+        cache: pnpm
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+        registry-url: ${{ inputs.registry-url }}
+
+    - name: Install dependencies
+      if: inputs.install == 'true'
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: pnpm install --frozen-lockfile

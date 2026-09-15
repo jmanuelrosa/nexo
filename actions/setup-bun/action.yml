@@ -1,0 +1,51 @@
+name: Setup Bun
+
+description: Set up Node and Bun, then install locked dependencies
+
+inputs:
+  node-version-file:
+    description: Node version file relative to the repository root
+    required: false
+    default: .nvmrc
+  bun-version:
+    description: Bun version used when bun-version-file is empty
+    required: false
+    default: latest
+  bun-version-file:
+    description: Optional Bun version file relative to the repository root
+    required: false
+    default: ""
+  working-directory:
+    description: Directory in which dependencies are installed
+    required: false
+    default: .
+  install:
+    description: Install dependencies from the lockfile
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Node
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      with:
+        node-version-file: ${{ inputs.node-version-file }}
+
+    - name: Set up Bun from version file
+      if: inputs.bun-version-file != ''
+      uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      with:
+        bun-version-file: ${{ inputs.bun-version-file }}
+
+    - name: Set up Bun from version input
+      if: inputs.bun-version-file == ''
+      uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      with:
+        bun-version: ${{ inputs.bun-version }}
+
+    - name: Install dependencies
+      if: inputs.install == 'true'
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: bun install --frozen-lockfile
